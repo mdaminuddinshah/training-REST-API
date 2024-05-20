@@ -1,8 +1,8 @@
 import { passport } from "../../database/databaseConnection.js";
+import emailValidation from "../../utils/emailValidation.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import "dotenv/config";
-
 
 const queryUser = `
     SELECT * FROM users WHERE email = $1
@@ -17,6 +17,14 @@ export const login = async (req,res) => {
         if(!email || !password){
             return res.status(404).json({
                 message: "email and password cannot empty"
+            })
+        };
+
+        // check if email is valid or not
+        const isEmailValid = emailValidation(email);
+        if(!isEmailValid){
+            return res.status(404).json({
+                message: "invalid email"
             })
         };
 
@@ -55,8 +63,8 @@ export const login = async (req,res) => {
         });
 
     } catch(err){
-        res.status(404).json({
-            message: "user not register"
+        res.status(500).json({
+            message: "cannot login right now"
         })
     }
 };
