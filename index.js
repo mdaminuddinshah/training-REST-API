@@ -1,6 +1,5 @@
 import express from "express";
-// import { health, notExist } from "./controller/health.js";
-import routerTest from "./controller/health.js";
+import routerTest from "./routes/routes.js";
 import { databaseConnection } from "./database/databaseConnection.js";
 
 const app = express();
@@ -13,7 +12,6 @@ app.use(express.urlencoded({extended: true}));
 databaseConnection();
 
 // using router
-app.use("/", routerTest);
 app.use("/", routerTest);
 
 app.listen(port);

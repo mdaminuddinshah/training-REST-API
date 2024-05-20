@@ -1,4 +1,6 @@
 import router from "express";
+import { register } from "../controller/user controller/register.js";
+import { login } from "../controller/user controller/login.js";
 
 const routerTest = router();
 
@@ -26,6 +28,9 @@ routerTest.get("/admin", (req,res) => {
     }
 });
 
+routerTest.post("/register", register);
+routerTest.get("/login", login);
+
 routerTest.use((req,res) => {
     try{
         res.send("page not found");
@@ -36,6 +41,8 @@ routerTest.use((req,res) => {
         res.status(500);
     }
 })
+
+
 
 export default routerTest;
 
