@@ -5,6 +5,10 @@ const querySlotDB = `
     VALUES($1,$2) RETURNING *
 `;
 
+const queryDB = `
+    SELECT * FROM slots WHERE date = $1 AND time = $2
+`;
+
 const createSlots = async (req,res) => {
     try{
         const date = req.body.date;
@@ -14,6 +18,15 @@ const createSlots = async (req,res) => {
         if(!date || !time){
             return res.status(404).json({
                 message: "date and time must provided"
+            })
+        };
+
+        // check is date and time is exist
+        const isDateTimeExist = await passport.query(queryDB, [date, time]);
+        const isExist = isDateTimeExist.rows.length;
+        if(isExist){
+            return res.status(404).json({
+                message: "slot already exist"
             })
         };
 
