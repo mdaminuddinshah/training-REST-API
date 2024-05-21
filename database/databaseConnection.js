@@ -2,6 +2,7 @@ import pg from "pg";
 import "dotenv/config";
 import createTableUser from "../model/users.js";
 import createTableSlots from "../model/slots.js";
+import updateTableSlots from "../model/updateSlot.js";
 
 const { Pool } = pg;
 
@@ -22,6 +23,7 @@ export const databaseConnection = async () => {
 
         createTableUser();
         createTableSlots();
+        updateTableSlots();
     } catch(err){
         console.log("DB error");
     }

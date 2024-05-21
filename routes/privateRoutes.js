@@ -1,5 +1,7 @@
 import router from "express";
 import isAuth from "../middleware/isAuthenticate.js";
+import createSlots from "../controller/slot controller/createSlot.js";
+import listAllSlots from "../controller/slot controller/listSlot.js";
 
 const privateRouter = router();
 
@@ -10,14 +12,7 @@ privateRouter.get("/private", (req,res) => {
     res.send("private page")
 });
 
-// last sekali handle page not found
-// privateRouter.use((req, res) => {
-//     try {
-//         res.status(404).send("page not found");
-//         console.log("page not found");
-//     } catch (err) {
-//         res.status(500).send("server error");
-//     }
-// });
+privateRouter.post("/create", createSlots);
+privateRouter.get("/read", listAllSlots);
 
 export default privateRouter;

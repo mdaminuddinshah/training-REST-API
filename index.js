@@ -15,7 +15,7 @@ databaseConnection();
 
 // using router
 app.use("/", publicRouter);
-app.use("/", privateRouter);
+app.use("/admin", privateRouter);
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
