@@ -1,6 +1,7 @@
 import { passport } from "../../database/databaseConnection.js";
 import bcrypt from "bcrypt";
 import emailValidation from "../../utils/emailValidation.js";
+import sendEmail from "../../service/email.js";
 
 const queryRegister = `
     INSERT INTO users(
@@ -38,6 +39,15 @@ export const register = async (req,res) => {
 
         // query to database
         await passport.query(queryRegister, [email, hashedPwd]);
+
+        // send email
+        const data = {
+            to: email,
+            subject: "Welcome",
+            text: `Hello ${email}`,
+            html: `<h1>Hello ${email}</h1>`
+        };
+        await sendEmail(data);
 
         // send status success
         res.status(200).json({

@@ -13,6 +13,8 @@ const listAllSlots = async (req,res) => {
 
         const query = await passport.query(queryDBSlot);
         const lists = query.rows;
+        // console.log(lists);
+        // console.log(query);
         const isFoundList = lists.length ? `Found ${lists.length} lists` : "not found any list"
         res.status(200).json({
             message: isFoundList,

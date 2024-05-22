@@ -1,5 +1,6 @@
 import { passport } from "../../database/databaseConnection.js";
 import emailValidation from "../../utils/emailValidation.js";
+import sendEmail from "../../service/email.js";
 
 const queryDBAvailable = `
     SELECT * FROM slots 
@@ -36,6 +37,7 @@ const createPublicSlot = async (req,res) => {
         };
 
         // check if slot is booked or not
+        
         const availableSlot = await passport.query(queryDBAvailable, [id]);
         if(availableSlot.rows.length){
             return res.status(404).json({
@@ -44,6 +46,18 @@ const createPublicSlot = async (req,res) => {
         };
 
         const updateSlot = await passport.query(queryDBUpdateSlot, [name, email, phone, id]);
+
+
+        // selepas database, letak email service
+        const emailData = {
+            to: email,
+            subject: "Slot booked",
+            html: `<p>Hi ${name}, your slot has been booked</p><p>Slot details: ${updateSlot.rows[0].date} ${updateSlot.rows[0].time}</p>`,
+            text: `Hi ${name}, your slot has been booked`,
+          };
+          await sendEmail(emailData);
+
+
 
         res.status(200).json({
             message: updateSlot.rows
